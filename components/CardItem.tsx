@@ -9,7 +9,7 @@ const StyledPressable = styled(Pressable);
 
 const placeholderImage = require('../assets/images/placeholder_no_image_available.webp');
 
-const CardItem = ({ item }: any) => {
+const CardItem = ({ item, onPress }: any) => {
   const imageSource = item?.links?.[0]?.href ? { uri: item.links[0].href } : placeholderImage;
 
   const truncate = (str: string, n: number) => {
@@ -18,7 +18,10 @@ const CardItem = ({ item }: any) => {
 
   return (
     <Link asChild href={`/${item?.data[0]?.nasa_id}`}>
-      <StyledPressable className="active:opacity-70 border border-black active:border-white/40 mb-4 w-full rounded-xl relative">
+      <StyledPressable
+        onPress={onPress}
+        className="active:opacity-70 border border-black active:border-white/40 mb-4 w-full rounded-xl relative"
+      >
         <ThemedView darkColor="#001F3F" className="w-full h-[200px] p-4 rounded-xl">
           <ThemedView className="flex-row gap-4 h-full bg-transparent" key={item?.data[0]?.nasa_id}>
             <Image source={imageSource} className="w-[107px] h-full rounded object-cover" />
@@ -35,7 +38,7 @@ const CardItem = ({ item }: any) => {
   );
 };
 
-export function AnimatedGameCard({ items, index }: any) {
+export function AnimatedGameCard({ items, index, onPress }: any) {
   const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -49,7 +52,7 @@ export function AnimatedGameCard({ items, index }: any) {
 
   return (
     <Animated.View style={{ opacity }}>
-      <CardItem item={items} />
+      <CardItem item={items} onPress={onPress} />
     </Animated.View>
   );
 }

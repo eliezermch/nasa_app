@@ -1,8 +1,10 @@
 import { NasaApodData } from '@/model/APOD';
-import React from 'react';
+import { NasaLibItem } from '@/model/NASALIB';
+import React, { Dispatch } from 'react';
 
-interface GoblalStateType {
+export interface GlobalStateType {
   apod: NasaApodData;
+  NasaItems: NasaLibItem[];
 }
 
 interface ChildrenProps {
@@ -19,17 +21,25 @@ const defaultGlobalState = {
     title: '',
     url: '',
   },
+  NasaItems: [],
 };
-const globalContext = React.createContext<GoblalStateType>(defaultGlobalState);
-const dispatchContext = React.createContext<ReducerType>(undefined);
+const globalContext = React.createContext<GlobalStateType>(defaultGlobalState);
+const dispatchContext = React.createContext<Dispatch<Partial<GlobalStateType>> | null>(null);
 
-const useGlobatState = () => [React.useContext(globalContext), React.useContext(dispatchContext)];
+const useGlobalState = (): [GlobalStateType, Dispatch<Partial<GlobalStateType>>] => {
+  const state = React.useContext(globalContext);
+  const dispatch = React.useContext(dispatchContext);
 
-type ReducerType = GoblalStateType | undefined | any;
+  if (dispatch === null) {
+    throw new Error('useGlobalState must be used within a GlobalStateProvider');
+  }
+
+  return [state, dispatch];
+};
 
 const GlobalStateProvider = ({ children }: ChildrenProps) => {
   const [state, dispatch] = React.useReducer(
-    (state: GoblalStateType, action: ReducerType) => ({ ...state, ...action }),
+    (state: GlobalStateType, action: Partial<GlobalStateType>) => ({ ...state, ...action }),
     defaultGlobalState
   );
 
@@ -40,4 +50,4 @@ const GlobalStateProvider = ({ children }: ChildrenProps) => {
   );
 };
 
-export { GlobalStateProvider, useGlobatState };
+export { GlobalStateProvider, useGlobalState };

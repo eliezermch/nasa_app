@@ -7,12 +7,14 @@ import { useState } from 'react';
 import { getNasaLibrary } from '@/service/apodapi';
 import { AnimatedGameCard } from '@/components/CardItem';
 import { NasaLibItem } from '@/model/NASALIB';
+import { useGlobalState } from '@/context/context';
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState('');
   const [items, setItems] = useState<NasaLibItem[]>();
   const [loading, setLoading] = useState(false);
   const [searchTriggered, setSearchTriggered] = useState(false);
+  const [state, dispatch] = useGlobalState();
 
   const performSearch = async () => {
     setSearchTriggered(true);
@@ -28,6 +30,16 @@ export default function SearchPage() {
       }
     } else {
       setItems([]);
+    }
+  };
+
+  const handleSelectItem = (item: NasaLibItem) => {
+    const itemExists = state.NasaItems.some(
+      (existingItem: NasaLibItem) => existingItem.data[0].nasa_id === item.data[0].nasa_id
+    );
+
+    if (!itemExists) {
+      dispatch({ NasaItems: [...state.NasaItems, item] });
     }
   };
 
@@ -51,7 +63,9 @@ export default function SearchPage() {
           className="mt-6"
           data={items}
           keyExtractor={(item: any) => item?.data[0]?.nasa_id}
-          renderItem={({ item, index }) => <AnimatedGameCard items={item} index={index} />}
+          renderItem={({ item, index }) => (
+            <AnimatedGameCard items={item} index={index} onPress={() => handleSelectItem(item)} />
+          )}
         />
       )}
     </ThemedView>

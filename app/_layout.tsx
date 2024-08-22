@@ -42,6 +42,15 @@ export default function RootLayout() {
               headerTitle: 'Explore NASA Achievements',
             }}
           />
+          <Stack.Screen
+            name="[nasa_id]"
+            options={{
+              headerStyle: { backgroundColor: 'black' },
+              headerTintColor: 'white',
+              headerBackTitleVisible: false,
+              headerTitle: 'NASA',
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </GlobalStateProvider>

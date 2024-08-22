@@ -1,9 +1,9 @@
-import { Image, Platform, Pressable } from 'react-native';
+import { Image, Pressable } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useGlobatState } from '@/context/context';
+import { useGlobalState } from '@/context/context';
 import { useEffect } from 'react';
 import { NasaApodData } from '@/model/APOD';
 import { getApodData } from '@/service/apodapi';
@@ -11,16 +11,14 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { Link } from 'expo-router';
 
 const searchBgImage = require('../../assets/images/hero-image-241707.webp');
-console.log('🚀 ~ searchBgImage:', searchBgImage);
 
 export default function HomeScreen() {
-  const [state, dispatch] = useGlobatState();
-  console.log('🚀 ~ HomeScreen ~ state:', state?.apod?.url?.length);
+  const [state, dispatch] = useGlobalState();
 
   useEffect(() => {
     (async () => {
-      if (!state.apod.length) {
-        const data: NasaApodData[] = await getApodData();
+      if (!state.apod.date) {
+        const data: NasaApodData = await getApodData();
         dispatch({ apod: data });
       }
     })();

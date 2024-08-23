@@ -25,11 +25,11 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="explore"
+          name="solarSys"
           options={{
-            title: 'Explore',
+            title: 'Explore Solar Sys',
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+              <TabBarIcon name={focused ? 'planet' : 'planet-outline'} color={color} />
             ),
           }}
         />

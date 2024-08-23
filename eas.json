@@ -13,7 +13,12 @@
         "simulator": true
       }
     },
-    "production": {}
+    "production": {},
+    "simulator": {
+      "ios": {
+        "simulator": true
+      }
+    }
   },
   "submit": {
     "production": {}

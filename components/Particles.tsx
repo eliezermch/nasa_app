@@ -51,7 +51,7 @@ export function Particles() {
 
     const particleMaterials = textures.map((texture) => {
       return new THREE.PointsMaterial({
-        size: 0.6,
+        size: 0.7,
         sizeAttenuation: true,
         map: texture,
         transparent: true,

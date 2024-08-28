@@ -31,12 +31,15 @@ export default function AchievementPage() {
         }
 
         if (finalAsset) {
+          // Ensure the asset URL is using https
+          const secureAssetUrl = finalAsset.href.replace('http://', 'https://');
+
           const updatedItem: NasaLibItem = {
             ...selectedItem,
             data: [
               {
                 ...selectedItem.data[0],
-                asset: finalAsset.href,
+                asset: secureAssetUrl,
               },
             ],
           };

@@ -1,13 +1,15 @@
 import { SolarSysExperience } from '@/components/SolarSysExperience';
+import { SolarSysExperienceAndroid } from '@/components/SolarSystemExperienceAndroid';
 import { ThemedView } from '@/components/ThemedView';
 import { Canvas } from '@react-three/fiber/native';
 import useControls from 'r3f-native-orbitcontrols';
+import { Platform } from 'react-native';
 
 export default function TabTwoScreen() {
   const [OrbitControls, events] = useControls();
 
   return (
-    <ThemedView className="flex-[1]" {...events}>
+    <ThemedView darkColor="#000" className="flex-[1]" {...events}>
       <Canvas
         // scene={{ background: cubeTexture }}
         camera={{
@@ -16,19 +18,17 @@ export default function TabTwoScreen() {
           far: 4000,
           position: [-50, 320, 500],
         }}
-        // onCreated={(state) => {
-        //   const _gl = state.gl.getContext();
-        //   const pixelStorei = _gl.pixelStorei.bind(_gl);
-        //   _gl.pixelStorei = function (...args) {
-        //     const [parameter] = args;
-        //     switch (parameter) {
-        //       case _gl.UNPACK_FLIP_Y_WEBGL:
-        //         return pixelStorei(...args);
-        //       default:
-        //         console.warn(`EXGL: gl.pixelStorei() doesn't support this parameter yet!`);
-        //     }
-        //   };
-        // }}
+        onCreated={(state) => {
+          const _gl = state.gl.getContext();
+          const pixelStorei = _gl.pixelStorei.bind(_gl);
+          _gl.pixelStorei = function (...args) {
+            const [parameter] = args;
+            switch (parameter) {
+              case _gl.UNPACK_FLIP_Y_WEBGL:
+                return pixelStorei(...args);
+            }
+          };
+        }}
       >
         <OrbitControls
           enableZoom={true}
@@ -39,23 +39,12 @@ export default function TabTwoScreen() {
           panSpeed={0.75}
         />
 
-        <ambientLight intensity={0.2} />
-
-        {/* <Environment
-          // background={true}
-          files={[
-            require('../../assets/images/stars.jpg'),
-            require('../../assets/images/stars.jpg'),
-            require('../../assets/images/stars.jpg'),
-            require('../../assets/images/stars.jpg'),
-            require('../../assets/images/stars.jpg'),
-            require('../../assets/images/stars.jpg'),
-          ]}
-        /> */}
+        <ambientLight intensity={0.5} />
 
         {/* <color args={['#000']} attach={'background'} /> */}
 
-        <SolarSysExperience />
+        {Platform.OS === 'ios' && <SolarSysExperience />}
+        {Platform.OS === 'android' && <SolarSysExperienceAndroid />}
       </Canvas>
     </ThemedView>
   );

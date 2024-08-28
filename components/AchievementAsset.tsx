@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ThemedView } from './ThemedView';
 import { ActivityIndicator, Image, Pressable } from 'react-native';
-import { useVideoPlayer, VideoView } from 'expo-video';
+import { Video } from 'expo-av';
 import { ThemedText } from './ThemedText';
 
 interface AchievementAssetProps {
@@ -9,8 +9,8 @@ interface AchievementAssetProps {
 }
 
 const AchievementAsset = ({ selectedItem }: AchievementAssetProps) => {
-  const VideoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const VideoRef = useRef<any>();
+  const [status, setStatus] = useState<any>({});
   const [video, setVideo] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
@@ -19,21 +19,6 @@ const AchievementAsset = ({ selectedItem }: AchievementAssetProps) => {
       setVideo(assetHref.includes('mp4'));
     }
   }, [selectedItem]);
-
-  const player = useVideoPlayer(selectedItem?.data[0].asset ?? '', (player) => {
-    player.loop = true;
-    player.play();
-  });
-
-  useEffect(() => {
-    const subscription = player.addListener('playingChange', (isPlaying) => {
-      setIsPlaying(isPlaying);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [selectedItem, player]);
 
   return (
     <ThemedView
@@ -47,25 +32,23 @@ const AchievementAsset = ({ selectedItem }: AchievementAssetProps) => {
         <>
           {video === true ? (
             <>
-              <VideoView
+              <Video
                 ref={VideoRef}
                 className="w-[350px] h-[275px] rounded-lg"
-                player={player}
-                allowsFullscreen
-                allowsPictureInPicture
+                source={{
+                  uri: selectedItem.data[0].asset ?? '',
+                }}
+                volume={1.0}
+                useNativeControls
+                isMuted={false}
+                isLooping
+                onPlaybackStatusUpdate={(status: any) => setStatus(() => status)}
               />
               <Pressable
-                onPress={() => {
-                  if (isPlaying) {
-                    player.pause();
-                  } else {
-                    player.play();
-                  }
-                  setIsPlaying(!isPlaying);
-                }}
+                onPress={() => (status.isPlaying ? VideoRef.current.pauseAsync() : VideoRef.current.playAsync())}
               >
                 <ThemedView darkColor="#000000" lightColor="#2F2F2F" className="mt-4 py-2 px-8 rounded-lg">
-                  <ThemedText>{isPlaying ? 'Pause' : 'Play'}</ThemedText>
+                  <ThemedText>{status.isPlaying ? 'Pause' : 'Play'}</ThemedText>
                 </ThemedView>
               </Pressable>
             </>

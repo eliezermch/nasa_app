@@ -1,22 +1,11 @@
 import * as THREE from 'three';
-import { useLoader } from '@react-three/fiber/native';
 import { useSpring, a } from '@react-spring/three';
 import { Particles } from './Particles';
 
-const SolarSysExperience = () => {
-  const sunTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/sun.jpg'));
-  const mercuryTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/mercury.jpg'));
-  const venusTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/venus.jpg'));
-  const earthTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/earth.jpg'));
-  const marsTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/mars.jpg'));
-  const jupiterTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/jupiter.jpg'));
-  const saturnTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/saturn.jpg'));
-  const uranusTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/uranus.jpg'));
-  const neptuneTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/neptune.jpg'));
-  const plutoTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/pluto.jpg'));
-
-  const saturnRingTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/saturn_ring.png'));
-  const uranusRingTexture: any = useLoader(THREE.TextureLoader, require('../assets/solar_sys/uranus_ring.png'));
+const SolarSysExperienceAndroid = () => {
+  // const sunMap = new THREE.TextureLoader().load(
+  //   'https://s3.amazonaws.com/fresco-augmented-reality.com/3d_files/fresco_redesign/assets/test/sun.jpg'
+  // );
 
   // MERCURIO ANIMATION
   const mercurioSelfRotationSpeed = 0.004;
@@ -221,13 +210,19 @@ const SolarSysExperience = () => {
   return (
     <group>
       {/* Sun */}
-      <group>
-        <mesh>
-          <sphereGeometry args={[15, 50, 50]} />
-          <meshBasicMaterial map={sunTexture} />
-        </mesh>
-      </group>
+      {/* <Sun /> */}
+      <mesh>
+        <sphereGeometry args={[15, 50, 50]} />
+        <meshBasicMaterial color={'#FCE570'} />
+      </mesh>
       <pointLight intensity={20000} distance={300} decay={2} castShadow position={[0, 0, 0]} />
+
+      {/* {planets.map((planet: any) => (
+        <mesh key={planet.id} position={planet.position}>
+          <sphereGeometry args={[planet.size, 50, 50]} />
+          <meshStandardMaterial map={planet.texture} />
+        </mesh>
+      ))} */}
 
       <Particles />
 
@@ -242,13 +237,6 @@ const SolarSysExperience = () => {
       <primitive object={createLineLoopWithMesh(200, 0xaaaaaa, 1)} />
       <primitive object={createLineLoopWithMesh(216, 0xaaaaaa, 1)} />
 
-      {/* {planets.map((planet: any) => (
-        <mesh key={planet.id} position={planet.position}>
-          <sphereGeometry args={[planet.size, 50, 50]} />
-          <meshStandardMaterial map={planet.texture} />
-        </mesh>
-      ))} */}
-
       {/* Mercurio */}
       <a.mesh
         castShadow
@@ -259,7 +247,7 @@ const SolarSysExperience = () => {
         position-z={mercurioRotationAroundSun.to((val) => 28 * Math.sin(val))}
       >
         <sphereGeometry args={[3.2, 50, 50]} />
-        <meshStandardMaterial map={mercuryTexture} />
+        <meshStandardMaterial color={'#787878'} />
       </a.mesh>
 
       {/* Venus */}
@@ -272,7 +260,7 @@ const SolarSysExperience = () => {
         position-z={venusRotationAroundSun.to((val) => 44 * Math.sin(val))}
       >
         <sphereGeometry args={[5.8, 50, 50]} />
-        <meshStandardMaterial map={venusTexture} />
+        <meshStandardMaterial color={'#E6E6E6'} />
       </a.mesh>
 
       {/* Earth */}
@@ -285,7 +273,7 @@ const SolarSysExperience = () => {
         position-z={earthRotationAroundSun.to((val) => 62 * Math.sin(val))}
       >
         <sphereGeometry args={[6, 50, 50]} />
-        <meshStandardMaterial map={earthTexture} />
+        <meshStandardMaterial color={'#1E90FF'} />
       </a.mesh>
 
       {/* Mars */}
@@ -298,7 +286,7 @@ const SolarSysExperience = () => {
         position-z={marsRotationAroundSun.to((val) => 78 * Math.sin(val))}
       >
         <sphereGeometry args={[4, 50, 50]} />
-        <meshStandardMaterial map={marsTexture} />
+        <meshStandardMaterial color={'#B22222'} />
       </a.mesh>
 
       {/* Jupiter */}
@@ -311,7 +299,7 @@ const SolarSysExperience = () => {
         position-z={jupiterRotationAroundSun.to((val) => 100 * Math.sin(val))}
       >
         <sphereGeometry args={[15, 50, 50]} />
-        <meshStandardMaterial map={jupiterTexture} />
+        <meshStandardMaterial color={'#FFA07A'} />
       </a.mesh>
 
       {/* Saturn */}
@@ -325,16 +313,11 @@ const SolarSysExperience = () => {
       >
         <mesh>
           <sphereGeometry args={[10, 50, 50]} />
-          <meshStandardMaterial map={saturnTexture} />
+          <meshStandardMaterial color={'#8B4513'} />
         </mesh>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[10, 20, 32]} />
-          <meshStandardMaterial
-            map={saturnRingTexture}
-            side={THREE.DoubleSide}
-            polygonOffset={true}
-            polygonOffsetFactor={-1}
-          />
+          <meshStandardMaterial color={'#F0F8FF'} side={THREE.DoubleSide} />
         </mesh>
       </a.group>
 
@@ -349,16 +332,11 @@ const SolarSysExperience = () => {
       >
         <mesh>
           <sphereGeometry args={[7, 50, 50]} />
-          <meshStandardMaterial map={uranusTexture} />
+          <meshStandardMaterial color={'#4682B4'} />
         </mesh>
         <mesh rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[7, 12, 32]} />
-          <meshStandardMaterial
-            map={uranusRingTexture}
-            side={THREE.DoubleSide}
-            polygonOffset={true}
-            polygonOffsetFactor={-1}
-          />
+          <meshStandardMaterial color={'#A52A2A'} side={THREE.DoubleSide} />
         </mesh>
       </a.group>
 
@@ -372,7 +350,7 @@ const SolarSysExperience = () => {
         position-z={neptuneRotationAroundSun.to((val) => 200 * Math.sin(val))}
       >
         <sphereGeometry args={[7, 50, 50]} />
-        <meshStandardMaterial map={neptuneTexture} />
+        <meshStandardMaterial color={'#000080'} />
       </a.mesh>
 
       {/* Pluto */}
@@ -385,7 +363,7 @@ const SolarSysExperience = () => {
         position-z={plutoRotationAroundSun.to((val) => 216 * Math.sin(val))}
       >
         <sphereGeometry args={[2.8, 50, 50]} />
-        <meshStandardMaterial map={plutoTexture} />
+        <meshStandardMaterial color={'#BFAF9B'} />
       </a.mesh>
 
       {/* {planets.map((planet, index) => (
@@ -395,4 +373,4 @@ const SolarSysExperience = () => {
   );
 };
 
-export { SolarSysExperience };
+export { SolarSysExperienceAndroid };

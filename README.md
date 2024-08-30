@@ -16,6 +16,6 @@ This is an NASA App project created by Eliezer
     npx expo start
    ```
 
-## Quick Preview
+## Quick Preview ( iOS / Android )
 
-![NASA App](/assets/preview/nasa_app_solarSys_ios_ec_240828.gif)
+![NASA App - iOS](/assets/preview/nasa_app_solarSys_ios_ec_240828.gif) ![NASA App - Android](/assets/preview/nasa_app_solarSys_android_ec_240828.gif)
